@@ -10,16 +10,17 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.internal.SessionFactoryImpl;
 import org.springframework.stereotype.Component;
 
 @Component
 public class DBManager {
 
-    private SessionFactory factory = new Configuration().configure().buildSessionFactory();
+    private SessionFactory factory;
 
     /* Method to  READ all the employees */
     public void listUsers() {
-        Session session = factory.openSession();
+        Session session = getSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -38,6 +39,18 @@ public class DBManager {
         } finally {
             session.close();
         }
+    }
+
+    private Session getSession() {
+        if(factory == null) {
+            try {
+                factory = new Configuration().configure().buildSessionFactory();
+            }
+            catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return factory.openSession();
     }
 
 
