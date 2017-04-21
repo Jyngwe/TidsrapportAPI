@@ -1,6 +1,7 @@
 package com.example.database;
 
 import javax.persistence.*;
+import java.util.Collection;
 
 /**
  * Created by Administrator on 2017-04-20.
@@ -12,6 +13,7 @@ public class UsersEntity {
     private String email;
     private String fullname;
     private String pass;
+    private Collection<TimestampsEntity> timestampsById;
 
     @Id
     @Column(name = "id", nullable = false)

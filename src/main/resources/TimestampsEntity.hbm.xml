@@ -6,8 +6,16 @@
 
     <class name="com.example.database.TimestampsEntity" table="timestamps" schema="public" catalog="dct2r6gnlhqdhu">
         <id name="id">
-            <column name="id" sql-type="integer"/>
+            <column name="id" sql-type="integer" unique="true"/>
+            <generator class="native">
+                <param name="sequence">timestamps_seq</param>
+            </generator>
+
+
         </id>
+        <property name="userId">
+            <column name="user_id" sql-type="integer" not-null="true"/>
+        </property>
         <property name="startdate">
             <column name="startdate" sql-type="timestamp"/>
         </property>
@@ -15,4 +23,6 @@
             <column name="enddate" sql-type="timestamp" not-null="true"/>
         </property>
     </class>
+
+
 </hibernate-mapping>

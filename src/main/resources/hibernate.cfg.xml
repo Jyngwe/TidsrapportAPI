@@ -4,13 +4,14 @@
     "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
   <session-factory>
-    <property name="connection.url">
-      <![CDATA[jdbc:postgresql://ec2-54-228-182-57.eu-west-1.compute.amazonaws.com:5432/dct2r6gnlhqdhu?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory&user=ibypezqbofomcw&password=e2d5538c79468bab49d396833e6aef8188dc3fb33736fc6e40ad89df4918fc70]]></property>
+    <property name="connection.url"><![CDATA[jdbc:postgresql://ec2-54-228-182-57.eu-west-1.compute.amazonaws.com:5432/dct2r6gnlhqdhu?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory&user=ibypezqbofomcw&password=e2d5538c79468bab49d396833e6aef8188dc3fb33736fc6e40ad89df4918fc70]]></property>
     <property name="connection.driver_class">org.postgresql.Driver</property>
     <mapping resource="TimestampsEntity.hbm.xml"/>
     <mapping class="com.example.database.TimestampsEntity"/>
     <mapping resource="UsersEntity.hbm.xml"/>
     <mapping class="com.example.database.UsersEntity"/>
+
+
     <!-- <property name="connection.username"/> -->
     <!-- <property name="connection.password"/> -->
 

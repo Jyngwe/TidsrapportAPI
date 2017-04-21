@@ -1,15 +1,19 @@
 package com.example.database;
 
 
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Iterator;
 
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.hibernate.SessionFactory;
+import org.apache.catalina.User;
+import org.hibernate.*;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Component;
+import javax.persistence.criteria.CriteriaQuery;
 
 @Component
 public class DBManager {
@@ -17,19 +21,74 @@ public class DBManager {
     private SessionFactory factory;
 
     /* Method to  READ all the employees */
-    public void listUsers() {
+    public List<UsersEntity> listUsers() {
         Session session = getSession();
         Transaction tx = null;
+        List<UsersEntity> users = new ArrayList();
         try {
             tx = session.beginTransaction();
-            List users = session.createQuery("FROM UsersEntity").list();
-            for (Iterator iterator =
-                 users.iterator(); iterator.hasNext(); ) {
-                UsersEntity user = (UsersEntity) iterator.next();
-                System.out.print(" Fullname: " + user.getFullname());
-                System.out.print(" Email: " + user.getEmail());
-                System.out.println("  Password: " + user.getPass());
-            }
+    /*          session.createQuery("FROM UsersEntity").list()*/
+                users = session.createCriteria(UsersEntity.class).list();
+
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return users;
+    }
+
+    public List<TimestampsEntity> listTimes() {
+        Session session = getSession();
+        Transaction tx = null;
+        List<TimestampsEntity> times = new ArrayList();
+        try {
+            tx = session.beginTransaction();
+            times = session.createQuery("FROM TimestampsEntity ").list();
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return times;
+    }
+
+    public List<TimestampsEntity> getTimesFromUser(int id) {
+        Session session = getSession();
+        Transaction tx = null;
+        List<TimestampsEntity> times = new ArrayList();
+        try {
+            tx = session.beginTransaction();
+
+            Criteria crit = session.createCriteria(TimestampsEntity.class);
+            crit.add(Restrictions.eq("userId", id));
+            times = crit.list();
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return times;
+    }
+
+    public void createTimeStamp(int userId) {
+        Session session = getSession();
+        Transaction tx = null;
+        List<TimestampsEntity> times = new ArrayList();
+        try {
+            tx = session.beginTransaction();
+
+            TimestampsEntity timestamp = new TimestampsEntity();
+            timestamp.setUserId(3);
+            timestamp.setStartdate(Timestamp.valueOf(LocalDateTime.now()));
+            session.save("TimestampsEntity", timestamp);
+
             tx.commit();
         } catch (HibernateException e) {
             if (tx != null) tx.rollback();
